@@ -12,12 +12,12 @@ export default function Home() {
         </div>
 
         <h1 className="title">
-          <span className="title-main">Happy Birthday Andrina</span>
-          <span className="title-accent">Rosiiii</span>
+          <span className="title-main">Happy Birthday Rosiii</span>
+          <span className="title-sub">Wishing you joy and surprises!</span>
         </h1>
 
         <p className="subtitle">
-          Your special moment awaits — tap anywhere to begin the magic
+          Your special moment awaits - tap anywhere to begin the magic
         </p>
 
         <div className="cta-section">

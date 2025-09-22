@@ -127,16 +127,17 @@ export default function Cake() {
   // Track if melody is currently playing
   const isPlayingRef = useRef(false);
 
-  function stopCurrentAudio() {
+  async function stopCurrentAudio() {
     if (audioCtxRef.current && masterGainRef.current) {
       const ctx = audioCtxRef.current;
       const master = masterGainRef.current;
-      const now = ctx.currentTime;
 
-      // Immediately stop all scheduled changes and fade out quickly
-      master.gain.cancelScheduledValues(now);
-      master.gain.setValueAtTime(master.gain.value, now);
-      master.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+      // Close the existing audio context
+      await ctx.close();
+
+      // Clear the references
+      audioCtxRef.current = null;
+      masterGainRef.current = null;
 
       // Reset playing state
       isPlayingRef.current = false;
@@ -273,19 +274,17 @@ export default function Cake() {
     }, 1500);
   };
 
-  const relight = () => {
+  const relight = async () => {
     // Stop any current audio before relighting
-    stopCurrentAudio();
+    await stopCurrentAudio();
 
     setBlown(false);
     setIsWishing(false);
 
-    // Wait a moment before lighting to ensure audio has stopped
-    setTimeout(() => {
-      setLit(true);
-      playMelody();
-      burstConfetti();
-    }, 200);
+    // Start fresh immediately since we've properly cleaned up
+    setLit(true);
+    playMelody();
+    burstConfetti();
   };
 
   // ─────────────────────────────────────────────
